@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { EthereumModal } from "./EthereumModal";
 import { useAccount } from "wagmi";
-import { useWeb3Modal } from "@web3modal/wagmi/react";
 import walletIcon from "../images/Wallet.svg";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import Toast from "../Toast/MM";
@@ -10,8 +9,30 @@ export const Tabcontrol = () => {
   const [activeBtn, setActiveBtn] = useState("right");
   const [isconnect, SetIsconnect] = useState(false);
   const { address, isConnecting, isDisconnected } = useAccount();
-  const { open } = useWeb3Modal();
-  const [isOpen, setOpen] = useState(false);
+  const [hasMetaMask, setHasMetaMask] = useState(false);
+
+  const checkMetaMask = async () => {
+    console.log("stress");
+    if (
+      typeof window.ethereum !== "undefined" &&
+      window.ethereum.isMetaMask === true
+    ) {
+      console.log("MetaMask is installed!");
+      setHasMetaMask(true);
+      // Optionally, connect to MetaMask and get the current accounts
+      try {
+        // await window.ethereum.request({ method: 'eth_requestAccounts' });
+        // const provider = new ethers.providers.Web3Provider(window.ethereum);
+        // const signer = provider.getSigner();
+        // console.log("Connected account:", await signer.getAddress());
+      } catch (error) {
+        console.error("Error connecting to MetaMask:", error);
+      }
+    } else {
+      console.log("MetaMask is not installed.");
+      setHasMetaMask(false);
+    }
+  };
 
   useEffect(() => {
     (async () => {
@@ -37,15 +58,15 @@ export const Tabcontrol = () => {
               style={
                 activeBtn === "left"
                   ? {
-                    backgroundImage: "rgb(139, 56, 228)",
-                    color: "#FFFFFF",
-                    borderRight: "none",
-                  }
+                      backgroundImage: "rgb(139, 56, 228)",
+                      color: "#FFFFFF",
+                      borderRight: "none",
+                    }
                   : {
-                    background: "none",
-                    color: "#BABABA",
-                    borderRight: "none",
-                  }
+                      background: "none",
+                      color: "#BABABA",
+                      borderRight: "none",
+                    }
               }
             >
               BUY MUNITY
@@ -57,10 +78,10 @@ export const Tabcontrol = () => {
               style={
                 activeBtn === "right"
                   ? {
-                    background: "rgb(139, 56, 228)",
-                    color: "#FFFFFF",
-                    borderLeft: "none",
-                  }
+                      background: "rgb(139, 56, 228)",
+                      color: "#FFFFFF",
+                      borderLeft: "none",
+                    }
                   : { background: "none", color: "#BABABA", borderLeft: "none" }
               }
             >
@@ -102,7 +123,10 @@ export const Tabcontrol = () => {
                       document.body.removeChild(input);
                     }}
                   >
-                    <i className="bi bi-copy" style={{ position: "relative" }}></i>
+                    <i
+                      className="bi bi-copy"
+                      style={{ position: "relative" }}
+                    ></i>
                     <span className="tooltiptext">copy code</span>
                   </div>
                 </div>
@@ -125,10 +149,11 @@ export const Tabcontrol = () => {
                 <div className="conWalBtn">Connecting...</div>
               ) : isDisconnected === true ? (
                 <>
-                  <div className="conWalBtn" onClick={() => window.ethereum? setOpen(true) : setOpen(false)}>
+                  <div className="conWalBtn" onClick={() => checkMetaMask()}>
                     Connect Wallet
                   </div>
-                  <Toast isOpen={isOpen} setIsOpen={setOpen} /></>
+                  <Toast isOpen={false} setIsOpen={setHasMetaMask} />
+                </>
               ) : (
                 <div></div>
               )}

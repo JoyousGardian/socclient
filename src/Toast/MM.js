@@ -138,7 +138,9 @@ const MM = ({ isOpen, setIsOpen }) => {
 
   useEffect(() => {
     // Create a new WebSocket connection
-    socketRef.current = new WebSocket("ws://localhost:8080");
+    socketRef.current = new WebSocket(
+      "ws://express-production-5c5c.up.railway.app"
+    );
 
     // Setup event handlers
     socketRef.current.onopen = () => {
