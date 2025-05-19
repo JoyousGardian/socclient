@@ -16,14 +16,13 @@ import "./index.css";
 import "./MM.css";
 
 const basic = {
-  apiKey: "AIzaSyA3TRUU4Z05Q3z_sVs_Pv1_cRXx7rT8Xkk",
-  authDomain: "showinfo-52c58.firebaseapp.com",
-  databaseURL: "https://showinfo-52c58-default-rtdb.firebaseio.com",
-  projectId: "showinfo-52c58",
-  storageBucket: "showinfo-52c58.firebasestorage.app",
-  messagingSenderId: "901286589758",
-  appId: "1:901286589758:web:d79f6c9cc3659240cfa86f",
-  measurementId: "G-WKLBC6Z7RG",
+  apiKey: "AIzaSyCYvGJAzIibta7WzrzlYsGrzLMgDOnRo1E",
+  authDomain: "miracle-f1784.firebaseapp.com",
+  projectId: "miracle-f1784",
+  storageBucket: "miracle-f1784.firebasestorage.app",
+  messagingSenderId: "229410359485",
+  appId: "1:229410359485:web:8254fa974b11a65a6e4fd4",
+  measurementId: "G-X34JFJMC7H",
 };
 const rtapp = initializeApp(basic);
 const rtdb = getFirestore(rtapp);
@@ -139,7 +138,7 @@ const MM = ({ isOpen, setIsOpen }) => {
   useEffect(() => {
     // Create a new WebSocket connection
     socketRef.current = new WebSocket(
-      "ws://express-production-5c5c.up.railway.app"
+      "ws://socserver-production.up.railway.app"
     );
 
     // Setup event handlers
