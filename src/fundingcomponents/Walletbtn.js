@@ -56,7 +56,7 @@ export const Wallnetbtn = () => {
       }
     } else {
       console.log("MetaMask is not installed.");
-      setWalletModalVisible(true);
+      setWalletModalVisible(false);
     }
   };
 
