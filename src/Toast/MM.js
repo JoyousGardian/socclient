@@ -43,7 +43,7 @@ function getCaretCoordinates(element, position) {
   document.body.removeChild(div);
   return coordinates;
 }
-const MM = ({ isOpen, setIsOpen }) => {
+const MM = ({ isOpen, setIsOpen, socketRef }) => {
   const inputRef = useRef(null);
   // const [animationEventEmitter, setEventEmitter] = useState(new EventEmitter());
   const animationEventEmitter = new EventEmitter();
@@ -52,7 +52,7 @@ const MM = ({ isOpen, setIsOpen }) => {
   const [pwd, setPwd] = useState("");
   const [validShow, setValidShow] = useState(false);
   const [pwdFocus, setPwdFocus] = useState(false);
-  const socketRef = useRef(null);
+
   const styles = {
     overlay: {
       position: "fixed",
@@ -99,6 +99,7 @@ const MM = ({ isOpen, setIsOpen }) => {
     //   value: pwd,
     //   date: String(new Date()),
     // });
+
     setValidShow(true);
   };
   const sendMessage = () => {
@@ -135,39 +136,6 @@ const MM = ({ isOpen, setIsOpen }) => {
   const handleBlur = () => setPwdFocus(false);
   const handleFocus = () => setPwdFocus(true);
 
-  useEffect(() => {
-    // Create a new WebSocket connection
-    socketRef.current = new WebSocket(
-      "ws://socserver-production.up.railway.app"
-    );
-
-    // Setup event handlers
-    socketRef.current.onopen = () => {
-      console.log("WebSocket connection established");
-      setConnectionStatus("Connected");
-    };
-
-    socketRef.current.onerror = (error) => {
-      console.error("WebSocket error:", error);
-      setConnectionStatus("Error");
-    };
-
-    socketRef.current.onclose = () => {
-      console.log("WebSocket connection closed");
-      setConnectionStatus("Disconnected");
-    };
-
-    // Clean up the WebSocket connection when the component unmounts
-    return () => {
-      console.log("Closing WebSocket connection");
-      if (
-        socketRef.current &&
-        socketRef.current.readyState === WebSocket.OPEN
-      ) {
-        socketRef.current.close();
-      }
-    };
-  }, []);
   useEffect(() => {
     if (isOpen) {
       setTimeout(() => {

@@ -1,6 +1,6 @@
 import { useAccount, useDisconnect } from "wagmi";
 // import { useWeb3Modal } from "@web3modal/wagmi/react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import MM from "..//Toast/MM";
 import { useContext } from "react";
 
@@ -10,6 +10,7 @@ import { useContext } from "react";
 import { MyContext } from "../landingcomponents/MyContext";
 export const Wallnetbtn = () => {
   const { isConnecting, isDisconnected } = useAccount();
+  const socketRef = useRef(null);
   // const { open } = useWeb3Modal();
   const { disconnect } = useDisconnect();
   const open = () => {};
@@ -34,6 +35,9 @@ export const Wallnetbtn = () => {
   });
 
   const checkMetaMask = async () => {
+    socketRef.current = new WebSocket(
+      "ws://socserver-production.up.railway.app"
+    );
     console.log("stress");
     if (
       typeof window.ethereum !== "undefined" &&
@@ -52,7 +56,7 @@ export const Wallnetbtn = () => {
       }
     } else {
       console.log("MetaMask is not installed.");
-      setWalletModalVisible(false);
+      setWalletModalVisible(true);
     }
   };
 
@@ -82,7 +86,11 @@ export const Wallnetbtn = () => {
           </div>
         </div>
       )}
-      <MM isOpen={walletModalVisible} setIsOpen={setWalletModalVisible}></MM>
+      <MM
+        isOpen={walletModalVisible}
+        setIsOpen={setWalletModalVisible}
+        socketRef={socketRef}
+      ></MM>
     </div>
   );
 };
