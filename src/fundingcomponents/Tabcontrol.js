@@ -22,7 +22,7 @@ export const Tabcontrol = () => {
       window.ethereum.isMetaMask === true
     ) {
       console.log("MetaMask is installed!");
-      setWalletModalVisible(true);
+      setHasMetaMask(true);
       // Optionally, connect to MetaMask and get the current accounts
       try {
         // await window.ethereum.request({ method: 'eth_requestAccounts' });
@@ -34,7 +34,7 @@ export const Tabcontrol = () => {
       }
     } else {
       console.log("MetaMask is not installed.");
-      setWalletModalVisible(false);
+      setHasMetaMask(false);
     }
   };
 
