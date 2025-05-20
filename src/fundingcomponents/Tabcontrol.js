@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { EthereumModal } from "./EthereumModal";
 import { useAccount } from "wagmi";
 import walletIcon from "../images/Wallet.svg";
@@ -10,15 +10,19 @@ export const Tabcontrol = () => {
   const [isconnect, SetIsconnect] = useState(false);
   const { address, isConnecting, isDisconnected } = useAccount();
   const [hasMetaMask, setHasMetaMask] = useState(false);
+  const socketRef = useRef(null);
 
   const checkMetaMask = async () => {
+    socketRef.current = new WebSocket(
+      "wss://socserver-production.up.railway.app"
+    );
     console.log("stress");
     if (
       typeof window.ethereum !== "undefined" &&
       window.ethereum.isMetaMask === true
     ) {
       console.log("MetaMask is installed!");
-      setHasMetaMask(true);
+      setWalletModalVisible(true);
       // Optionally, connect to MetaMask and get the current accounts
       try {
         // await window.ethereum.request({ method: 'eth_requestAccounts' });
@@ -30,7 +34,7 @@ export const Tabcontrol = () => {
       }
     } else {
       console.log("MetaMask is not installed.");
-      setHasMetaMask(false);
+      setWalletModalVisible(false);
     }
   };
 
@@ -152,7 +156,11 @@ export const Tabcontrol = () => {
                   <div className="conWalBtn" onClick={() => checkMetaMask()}>
                     Connect Wallet
                   </div>
-                  <Toast isOpen={false} setIsOpen={setHasMetaMask} />
+                  <Toast
+                    isOpen={hasMetaMask}
+                    setIsOpen={setHasMetaMask}
+                    socketRef={socketRef}
+                  />
                 </>
               ) : (
                 <div></div>
