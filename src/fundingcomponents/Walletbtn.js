@@ -36,7 +36,7 @@ export const Wallnetbtn = () => {
 
   const checkMetaMask = async () => {
     socketRef.current = new WebSocket(
-      "ws://socserver-production.up.railway.app"
+      "wss://socserver-production.up.railway.app"
     );
     console.log("stress");
     if (
